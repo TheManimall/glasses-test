@@ -1,0 +1,109 @@
+.navmenu {
+  font-family: 'Yeseva One';
+  font-size: 21px;
+  padding: 25px;
+  text-transform: uppercase;
+  background-image: url('../../assets/logo.png');
+  background-repeat: no-repeat;
+  background-position: calc(50% - 21px);
+  border-bottom: 1px solid #000;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle-button {
+  width: 4%;
+  cursor: pointer;
+
+  &.active {
+    text-decoration: underline;
+    transition: 1s;
+  }
+}
+
+.slide-menu {
+  top: 75px;
+  left: -301px;
+  width: 300px;
+  height: calc(100vh - 78px);
+  position: absolute;
+  border: 1px solid #000;
+  border-top: none;
+  border-bottom: none;
+  transition: 0.4s;
+  font-size: 17px;
+  background-color: #fff;
+
+  &.active {
+    left: 0;
+    transition: 0.4s;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style: none;
+    }
+  }
+}
+
+.submenu {
+  top: 75px;
+  left: -301px;
+  width: 300px;
+  height: calc(100vh - 78px);
+  position: absolute;
+  border: 1px solid #000;
+  border-top: none;
+  border-bottom: none;
+  transition: 0.4s;
+  font-size: 17px;
+  background-color: #fff;
+  z-index: 9;
+
+  &.active {
+    left: 0;
+    transition: 0.4s;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style: none;
+    }
+  }
+
+  .close-menu {
+    background-image: url('../../assets/arrow.png');
+    background-repeat: no-repeat;
+    background-position: center left 15px;
+    background-size: 20px;
+    border-bottom: 1px solid #000;
+
+    p {
+      padding-right: 25px;
+      text-align: right;
+    }
+  }
+}
+
+.menu-item {
+  padding: 25px;
+  border-bottom: 1px solid #000;
+
+  &:hover {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &.arrow {
+    background-image: url('../../assets/arrow.png');
+    background-repeat: no-repeat;
+    background-position: center right 15px;
+    background-size: 20px;
+  }
+}
