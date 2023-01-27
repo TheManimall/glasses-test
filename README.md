@@ -7,9 +7,9 @@ Clone this repo:
 ### `cd glasses-test`
 
 ### `npm install` or 
-### `yarn` (I'm using ### `yarn`)
+### `yarn` (I'm using `yarn`)
 
 ### `npm run start` 
-or ### `yarn run start`
+or `yarn run start`
 
 Thanks for you attention !
