@@ -6,8 +6,10 @@ Clone this repo:
 
 ### `cd glasses-test`
 
-### `npm install` or ### `yarn` (I'm using ### `yarn`)
+### `npm install` or 
+### `yarn` (I'm using ### `yarn`)
 
-### `npm run start` or ### `yarn run start`
+### `npm run start` 
+or ### `yarn run start`
 
 Thanks for you attention !
