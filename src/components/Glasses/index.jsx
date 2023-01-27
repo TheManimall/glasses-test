@@ -18,10 +18,12 @@ const Glasses = ({ filter, page, onSetPage }) => {
   // GET DATA BY FILTER && PATHNAME 
   useEffect(() => {
     axios.get(buildFilterLinkForAPI(pathname, page, filter))
+      .then(result => setGlasses(getAndTransformDataFromAPI(result.data.glasses)))
       .then(() => {
         setLoad(false)
         onSetPage(2)
       })
+      .catch(e => console.warn('error', e))
   }, [pathname, filter])
 
   // GET DATA BY INFINITY SCROLL
@@ -33,6 +35,7 @@ const Glasses = ({ filter, page, onSetPage }) => {
         setLoad(false)
         onSetPage(prevState => prevState + 1)
       })
+      .catch(e => console.warn('error', e))
     }
   }, [load])
 
