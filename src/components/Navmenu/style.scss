@@ -9,6 +9,15 @@
   border-bottom: 1px solid #000;
   position: relative;
   cursor: pointer;
+
+  .handle-close-menu {
+    position: absolute;
+    left: 298px;
+    top: 0;
+    pointer-events: all;
+    width: calc(100% - 298px);
+    height: 100vh;
+  }
 }
 
 .toggle-button {
@@ -23,7 +32,7 @@
 
 .slide-menu {
   top: 75px;
-  left: -301px;
+  left: -305px;
   width: 300px;
   height: calc(100vh - 78px);
   position: absolute;
@@ -33,6 +42,8 @@
   transition: 0.4s;
   font-size: 17px;
   background-color: #fff;
+  z-index: 10;
+  border-left: none;
 
   &.active {
     left: 0;
@@ -51,7 +62,7 @@
 
 .submenu {
   top: 75px;
-  left: -301px;
+  left: -305px;
   width: 300px;
   height: calc(100vh - 78px);
   position: absolute;
@@ -61,7 +72,8 @@
   transition: 0.4s;
   font-size: 17px;
   background-color: #fff;
-  z-index: 9;
+  z-index: 20;
+  border-left: none;
 
   &.active {
     left: 0;
@@ -78,9 +90,6 @@
   }
 
   .close-menu {
-    background-image: url('../../assets/arrow.png');
-    background-repeat: no-repeat;
-    background-position: center left 15px;
     background-size: 20px;
     border-bottom: 1px solid #000;
 

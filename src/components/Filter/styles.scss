@@ -15,9 +15,48 @@
       
       .sub-section {
         border-right: 1px solid #000;
+        position: relative;
 
         &:last-of-type {
           border: none;
+        }
+
+        .list {
+          position: absolute;
+          top: 78px;
+          left: -1px;
+          background-color: #fff;
+          border: 1px solid #000;
+          width: 100%;
+
+          ul {
+            padding: 0;
+            margin: 0;
+            
+            li {
+              list-style: none;
+              padding: 15px;
+              margin: 0;
+              border-bottom: 1px solid #000;
+              text-align: center;
+              text-transform: uppercase;
+              font-family: 'Yeseva One';
+
+              &:last-of-type {
+                border-bottom: none;
+              }
+
+              &:hover {
+                background-color: #000;
+                color: #fff;
+              }
+
+              &.selected {
+                background-color: #000;
+                color: #fff;
+              }
+            }
+          }
         }
       }
 

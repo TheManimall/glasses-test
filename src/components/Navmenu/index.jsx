@@ -1,74 +1,103 @@
 import React, { useState, useRef, useEffect, useCallback, Fragment } from 'react';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types'
 
 import MenuItem from './MenuItem';
 import Submenu from './Submenu';
 
 import { menuData } from './data';
     
-const Navmenu = () => {
+const Navmenu = ({ onSetPage, onSetFilter }) => {
   const [menuToggle, setMenuToggle] = useState(false)
   const [submenuToggle, setSubmenuToggle] = useState(false)
+  const [linkName, setLinkName] = useState('')
 
   const buttonRef = useRef()
   const menuRef = useRef()
+  const handleCloseRef = useRef()
 
-  const handleOpenMenu = useCallback((e) => {
+  const navigate = useNavigate()
+
+  const handleOpenMenu = useCallback(() => {
     setMenuToggle(true);
   }, [])
 
-  const handleCloseMenu = useCallback((e) => {
-    if (submenuToggle) return
-
-    setMenuToggle(false);
-  }, [submenuToggle])
-
-  const handleOpenSubmenu = useCallback(() => {
+  const handleOpenSubmenu = useCallback((name) => {
     setSubmenuToggle(true);
-    console.log('CLICK CLACK !!!!');
+    setMenuToggle(true)
+    setLinkName(name)
   }, [])
+
+  const handleOpenPage = useCallback((name) => {
+    navigate(`${linkName}-${name}`)
+    setSubmenuToggle(false)
+    setMenuToggle(false)
+    onSetPage(1)
+    onSetFilter([])
+  }, [linkName])
 
   const handleCloseSubmenu = useCallback(() => {
     setSubmenuToggle(false);
   }, [])
 
+  const handleCloseBothMenus = useCallback(() => {
+    setMenuToggle(false);
+    setSubmenuToggle(false);
+  }, [])
+
+  // HANDLE CLOSE MENU BY MOUSELEVE
+  useEffect(() => {
+    if (menuToggle) {
+      handleCloseRef.current.addEventListener('mouseover', handleCloseBothMenus)
+    }
+
+    return () => {
+      handleCloseRef.current.removeEventListener('mouseover', handleCloseBothMenus)
+    }
+  }, [menuToggle])
+
+  // HANDLE OPEN MENU BY HOVER
   useEffect(() => {
     buttonRef.current.addEventListener('mouseover', handleOpenMenu)
-    menuRef.current.addEventListener('mouseleave', handleCloseMenu)
-  }, [handleOpenMenu, handleCloseMenu])
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     console.log('This will run after 1 second!')
-  //   }, 1000);
-  //   return () => clearTimeout(timer);
-  // }, []);
+    return () => {
+      buttonRef.current.removeEventListener('mouseover', handleOpenMenu)
+    }
+  }, [])
 
   return (
     <nav className="navmenu">
       <div className={clsx('toggle-button', menuToggle && 'active')} ref={buttonRef}>Menu</div>
       <div className={clsx('slide-menu', menuToggle && 'active')} ref={menuRef}>
         {menuToggle && (
-          <ul>
-            {menuData.map(({ name, submenu, id }) => (
-              <MenuItem 
-                key={id} 
-                name={name} 
-                submenu={submenu}
-                handleClick={handleOpenSubmenu} 
-              />))
-            }
-          </ul>
+          <Fragment>
+            <ul>
+              {menuData.map(({ name, submenu, id }) => (
+                <MenuItem 
+                  key={id} 
+                  name={name} 
+                  submenu={submenu}
+                  handleClick={() => handleOpenSubmenu(name)} 
+                />))
+              }
+            </ul>
+          </Fragment>
         )}
       </div>
       <Submenu 
         toggle={submenuToggle}
-        handleClose={handleCloseSubmenu} 
+        handleClose={handleCloseSubmenu}
+        handleOpen={handleOpenPage} 
       />
+      <div className='handle-close-menu' ref={handleCloseRef} />
     </nav>
   );
 };
 
-export default Navmenu;
+Navmenu.propTypes = {
+  onSetPage: PropTypes.func,
+  onSetFilter: PropTypes.func,
+}
 
-//Libre Baskerville
+export default Navmenu;

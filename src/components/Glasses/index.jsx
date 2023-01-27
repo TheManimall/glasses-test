@@ -1,32 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types'
 
 import GlassesItem from './GlassesItem'
 
-const Glasses = () => {
-  const [glasses, setGlasses] = useState([]);
-  
-  useEffect(() => {
-    axios.get('https://staging-api.bloobloom.com/user/v1/sales_channels/website/collections/spectacles-women/glasses?page[limit]=12&page[number]=1')
-      .then(result => setGlasses([...result.data.glasses.reduce((acc, item) => {
-          return [
-            ...acc, 
-            { 
-              id: item.id,
-              name: item.name,
-              configurationName: item.configuration_name,
-              imageUrl: item.glass_variants[0].media[0].url
-            }]
-        }, [])]))
-      .catch(e => console.warn('error', e))
+import { getAndTransformDataFromAPI, buildFilterLinkForAPI } from '../../helpers/helpers'
 
-      console.log('glasses', glasses);
+const Glasses = ({ filter, page, onSetPage }) => {
+  const [glasses, setGlasses] = useState([]);
+  const [load, setLoad] = useState(false);
+
+  const glassesRef = useRef()
+
+  const { pathname } = useLocation()
+
+  // GET DATA BY FILTER && PATHNAME 
+  useEffect(() => {
+    axios.get(buildFilterLinkForAPI(pathname, page, filter))
+      .then(() => {
+        setLoad(false)
+        onSetPage(2)
+      })
+  }, [pathname, filter])
+
+  // GET DATA BY INFINITY SCROLL
+  useEffect(() => {
+    if (load) {
+      axios.get(buildFilterLinkForAPI(pathname, page, filter))
+      .then(result => setGlasses(prevState => ([...prevState, ...getAndTransformDataFromAPI(result.data.glasses)])))
+      .then(() => {
+        setLoad(false)
+        onSetPage(prevState => prevState + 1)
+      })
+    }
+  }, [load])
+
+  // HANDLE INFINITY SCROLL
+  const handleScroll = useCallback(() => {
+    if ((window.pageYOffset + window.innerHeight) >= (document.body.offsetHeight - 999)) {
+      setLoad(true)
+    }
   }, [])
 
-  console.log('glasses', glasses);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
+  }, [])
 
   return (
-    <div className='glasses'>
+    <div className='glasses' ref={glassesRef}>
       {glasses.map(item => (
         <GlassesItem
           key={item.id}
@@ -36,6 +62,12 @@ const Glasses = () => {
       ))}
     </div>
   )
+}
+
+Glasses.propTypes = {
+  filter: PropTypes.array,
+  page: PropTypes.number,
+  onSetPage: PropTypes.func,
 }
 
 export default Glasses;

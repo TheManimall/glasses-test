@@ -8,7 +8,8 @@ const MenuItem = ({ name, submenu, handleClick }) => (
 
 MenuItem.propTypes = {
   name: PropTypes.string,
-  submenu: PropTypes.bool
+  submenu: PropTypes.bool,
+  handleClick: PropTypes.func,
 }
 
 export default MenuItem

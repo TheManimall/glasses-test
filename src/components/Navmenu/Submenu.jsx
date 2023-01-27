@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react'
 import clsx from 'clsx';
+import PropTypes from 'prop-types'
 
 import MenuItem from './MenuItem';
 
 import { submenuData } from './data';
 
-const Submenu = ({ toggle, handleClose }) => (
+const Submenu = ({ toggle, handleClose, handleOpen }) => (
   <div className={clsx('submenu', toggle && 'active')}>
     {toggle && (
       <Fragment>
@@ -16,7 +17,9 @@ const Submenu = ({ toggle, handleClose }) => (
           {submenuData.map(({ name, id }) => (
             <MenuItem 
               key={id} 
-              name={name} 
+              name={name}
+              submenu
+              handleClick={() => handleOpen(name)} 
             />))
           }
         </ul>
@@ -24,5 +27,11 @@ const Submenu = ({ toggle, handleClose }) => (
     )}
   </div>
 )
+
+Submenu.propTypes = {
+  toggle: PropTypes.bool,
+  handleClose: PropTypes.func,
+  handleOpen: PropTypes.func,
+}
 
 export default Submenu;
